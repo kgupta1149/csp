@@ -5,3 +5,9 @@
       ansible.builtin.file:
         path: /etc/shadow
         mode: "0000"
+    - name: V-230231 passwords must be hashed with SHA512
+      ansible.builtin.lineinfile:
+        path: /etc/login.defs
+        regexp: '^\s*ENCRYPT_METHOD\s'
+        line: ENCRYPT_METHOD SHA512
+      tags: V-230231
