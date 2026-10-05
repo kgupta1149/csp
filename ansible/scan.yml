@@ -1,0 +1,7 @@
+- name: CSP compliance scan
+  hosts: targets
+  tasks:
+    - name: /etc/shadow must be mode 0000
+      ansible.builtin.file:
+        path: /etc/shadow
+        mode: "0000"
