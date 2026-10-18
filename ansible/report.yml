@@ -1,0 +1,26 @@
+# upload-file.yml - Upload a single file to S3
+---
+- name: Upload File to S3
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Peek at target-1 results
+      ansible.builtin.debug:
+        var: hostvars['target-1'].scan_results
+
+    - name: Write reports to JSON files
+      ansible.builtin.copy:
+        content: "{{ hostvars['target-1'].scan_results | to_nice_json }}"
+        dest: "{{ playbook_dir }}/../reports/scan.json"
+      check_mode: false
+
+    - name: Upload report to S3
+      amazon.aws.s3_object:
+        bucket: krish-csp-scan-reports
+        object: reports/scan.json
+        src: "{{ playbook_dir }}/../reports/scan.json"
+        mode: put
+        region: us-east-1
+      check_mode: false

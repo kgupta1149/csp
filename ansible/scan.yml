@@ -5,9 +5,32 @@
       ansible.builtin.file:
         path: /etc/shadow
         mode: "0000"
+      register: shadow_check
+    
     - name: V-230231 passwords must be hashed with SHA512
       ansible.builtin.lineinfile:
         path: /etc/login.defs
         regexp: '^\s*ENCRYPT_METHOD\s'
         line: ENCRYPT_METHOD SHA512
+      register: sha512_check
       tags: V-230231
+
+    - name: Record results for target
+      ansible.builtin.set_fact:
+        scan_results:
+          - control: shadow_check
+            result: "{{ 'FAIL' if shadow_check.changed else 'PASS'}}"
+          - control: V-230231
+            result: "{{'FAIL' if sha512_check.changed else 'PASS'}}"
+    
+    - name: Show results
+      ansible.builtin.debug:
+        var: scan_results
+
+- import_playbook: report.yml
+
+
+
+
+
+      
