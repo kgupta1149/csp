@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rocky-target
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rocky-target
+  template:
+    metadata:
+      labels:
+        app: rocky-target
+    spec:
+      containers:
+        - name: rocky
+          image: rockylinux:8
+          command: ["sleep", "infinity"]
