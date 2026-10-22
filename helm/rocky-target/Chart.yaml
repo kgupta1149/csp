@@ -1,0 +1,4 @@
+apiVersion: v2
+name: rocky-target
+description: Rocky Linux 8 STIG scan target
+version: 0.1.0
