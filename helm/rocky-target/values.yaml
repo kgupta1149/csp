@@ -5,4 +5,4 @@ image:
   tag: "8"
 
 stig:
-  encryptMethod: MD5
+  encryptMethod: SHA512
