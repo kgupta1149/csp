@@ -29,6 +29,3 @@
 
 - name: Generate and upload report
   ansible.builtin.import_playbook: report.yml
-
-
-      
