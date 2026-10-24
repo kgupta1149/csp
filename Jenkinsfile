@@ -24,7 +24,7 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh 'helm upgrade --install rocky helm/rocky-target --rollback-on-failure --timeout 60s'
+        sh 'helm upgrade --install rocky helm/rocky-target --atomic --timeout 60s'
       }
     }
   }
