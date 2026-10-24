@@ -14,6 +14,7 @@
       ansible.builtin.copy:
         content: "{{ hostvars['target-1'].scan_results | to_nice_json }}"
         dest: "{{ playbook_dir }}/../reports/scan.json"
+        mode: "0600"
       check_mode: false
 
     - name: Upload report to S3

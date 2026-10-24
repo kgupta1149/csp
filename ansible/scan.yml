@@ -6,7 +6,7 @@
         path: /etc/shadow
         mode: "0000"
       register: shadow_check
-    
+
     - name: V-230231 passwords must be hashed with SHA512
       ansible.builtin.lineinfile:
         path: /etc/login.defs
@@ -19,18 +19,16 @@
       ansible.builtin.set_fact:
         scan_results:
           - control: shadow_check
-            result: "{{ 'FAIL' if shadow_check.changed else 'PASS'}}"
+            result: "{{ 'FAIL' if shadow_check.changed else 'PASS' }}"
           - control: V-230231
-            result: "{{'FAIL' if sha512_check.changed else 'PASS'}}"
-    
+            result: "{{ 'FAIL' if sha512_check.changed else 'PASS' }}"
+
     - name: Show results
       ansible.builtin.debug:
         var: scan_results
 
-- import_playbook: report.yml
-
-
-
+- name: Generate and upload report
+  ansible.builtin.import_playbook: report.yml
 
 
       
