@@ -16,3 +16,8 @@ spec:
         - name: rocky
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           command: ["sleep", "infinity"]
+          readinessProbe:
+            exec:
+              command: ["grep", "-q", "^ENCRYPT_METHOD {{ .Values.stig.encryptMethod }}", "/etc/login.defs"]
+            initialDelaySeconds: 2
+            periodSeconds: 5

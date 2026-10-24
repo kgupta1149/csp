@@ -3,3 +3,6 @@ replicas: 2
 image:
   repository: rockylinux
   tag: "8"
+
+stig:
+  encryptMethod: SHA512
