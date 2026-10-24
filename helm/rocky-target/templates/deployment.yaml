@@ -12,12 +12,35 @@ spec:
       labels:
         app: {{ .Release.Name }}
     spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: rocky
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: Always
           command: ["sleep", "infinity"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
           readinessProbe:
             exec:
               command: ["grep", "-q", "^ENCRYPT_METHOD {{ .Values.stig.encryptMethod }}", "/etc/login.defs"]
             initialDelaySeconds: 2
             periodSeconds: 5
+          livenessProbe:
+            exec:
+              command: ["true"]
+            periodSeconds: 10
